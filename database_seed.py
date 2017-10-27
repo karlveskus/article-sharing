@@ -6,13 +6,13 @@ import datetime
 
 
 def base_query(session):
-    """ returns the full list of providers and courses """
     topics = session.query(Topic).all()
     articles = session.query(Article).all()
+
     return topics, articles
 
 
-def seed_database(session, filename='sample-data.json'):
+def database_seed(session, filename='sample-data.json'):
     """ provide initial data """
     topics, articles = base_query(session)
 

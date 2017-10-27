@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 
-from seed import base_query, seed_database
+from database_seed import base_query, database_seed
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -19,8 +19,10 @@ app.secret_key = 'secret'
 @app.route('/')
 def index():
     """ index page """
-    seed_database(session)
-    return("jou")
+    database_seed(session)
+
+    topics, articles = base_query(session)
+    return render_template('topics.html', topics=topics, articles=articles)
 
 
 @app.route('/topics')

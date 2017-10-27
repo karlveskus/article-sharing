@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-sm-12">
+                <h2>{{article.title}}</h2>
+                <p>{{article.description}}</p>
+                <p><a class="btn btn-default btn-sm" href={{article.url}} role="button">Read more &raquo;</a></p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
