@@ -1,0 +1,61 @@
+{
+    "topic": [
+        {
+            "id": 1,
+            "name": "JavaScript"
+        },
+        {
+            "id": 2,
+            "name": "HTML"
+        },
+        {
+            "id": 3,
+            "name": "CSS"
+        }
+    ],
+    "article": [
+        {
+            "title": "JavaScript Async/Await Explained in 10 Minutes",
+            "url": "https://tutorialzine.com/2017/07/javascript-async-await-explained",
+            "data_added": "2017-10-21",
+            "description": "Cool article about async javascript",
+            "topic_id": "1"
+        },
+        {
+            "title": "Learn Webpack in 15 Minutes",
+            "url": "https://tutorialzine.com/2017/04/learn-webpack-in-15-minutes",
+            "data_added": "2017-10-24",
+            "description": "Best Webpack tutorial",
+            "topic_id": "1"
+        },
+        {
+            "title": "Everything You Should Know About Progressive Web Apps",
+            "url": "https://tutorialzine.com/2016/09/everything-you-should-know-about-progressive-web-apps",
+            "data_added": "2017-10-25",
+            "description": "Everything You Should Know About Progressive Web Apps",
+            "topic_id": "1"
+        },
+
+        {
+            "title": "HTML Links",
+            "url": "https://www.w3schools.com/html/html_links.asp",
+            "data_added": "2017-10-21",
+            "description": "Learn HTML Links",
+            "topic_id": "2"
+        },{
+            "title": "TO FRAME OR NOT TO FRAME: THAT IS THE QUESTION",
+            "url": "http://websitetips.com/articles/html/frames/",
+            "data_added": "2017-10-23",
+            "description": "This article's intent is to help clarify some of the advantages and disadvantages of using frames and provide resources for further information.",
+            "topic_id": "2"
+        },
+
+        {
+            "title": "Practical CSS Grid: Adding Grid to an Existing Design",
+            "url": "https://alistapart.com/article/practical-grid",
+            "data_added": "2017-10-25",
+            "description": "Practical CSS Grid: Adding Grid to an Existing Design",
+            "topic_id": "3"
+        }
+    ]
+}
