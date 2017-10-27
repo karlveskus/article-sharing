@@ -28,7 +28,7 @@ def database_seed(session, filename='sample-data.json'):
             article = Article(
                 title=i['title'],
                 url=i['url'],
-                data_added=datetime.datetime.strptime(
+                date_added=datetime.datetime.strptime(
                     i['data_added'], '%Y-%m-%d').date(),
                 description=i['description'],
                 topic_id=i['topic_id'])

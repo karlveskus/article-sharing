@@ -27,7 +27,7 @@ class Article(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(80), nullable=False)
     url = Column(String(255))
-    data_added = Column(Date)
+    date_added = Column(Date)
     description = Column(String(2000))
     topic_id = Column(Integer, ForeignKey('topic.id'))
     topic = relationship(Topic)
@@ -39,7 +39,7 @@ class Article(Base):
             'id': self.id,
             'title': self.title,
             'url': self.url,
-            'data_added': self.data_added,
+            'date_added': self.date_added,
             'description': self.description,
             'topic_id': self.topic_id,
         }
