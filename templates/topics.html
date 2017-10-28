@@ -2,10 +2,10 @@
 {% block content %}
     <div class="row">
         {% for article in articles %}
-            <div class="col-sm-12">
+            <div class="col-sm-12 article">
                 <h2>{{article.title}}</h2>
                 <p>{{article.description}}</p>
-                <p>{{article.date_added}}</p>                
+                <p class="date" >Added: {{article.date_added}}</p>                
                 <p><a class="btn btn-default btn-sm" href={{article.url}} role="button">Read more &raquo;</a></p>
             </div>
         {% endfor %}
