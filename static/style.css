@@ -1,7 +1,16 @@
+/* Global */
+.float-right {
+    float: right;
+}
+
+
+/* Index */
 nav.navbar {
     margin-bottom: 0;
 }
 
+
+/* Topics */
 .article {
     margin-bottom: 15px;
 }
@@ -10,3 +19,10 @@ nav.navbar {
     float: right;
     color: 	#A9A9A9;
 }
+
+
+/* New_article */
+textarea {
+    resize: vertical; 
+}
+

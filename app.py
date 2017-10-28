@@ -90,6 +90,18 @@ def view_topics(topic_id):
     return render_template('topics.html', topics=topics, articles=articles, is_authenticated=authenticated)
 
 
+@app.route('/articles/new')
+def new_article():
+    """ add new article """
+    if not authenticated():
+        return redirect(url_for('login'))
+
+    topics, _articles = base_query(db_session)
+
+    return render_template('new_article.html', topics=topics, is_authenticated=authenticated)
+
+
+
 # API JSON routes
 @app.route(api_route + '/topics')
 def get_topics():
