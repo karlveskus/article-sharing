@@ -5,16 +5,16 @@ import json
 import datetime
 
 
-def base_query(session):
-    topics = session.query(Topic).all()
-    articles = session.query(Article).all()
+def base_query(db_session):
+    topics = db_session.query(Topic).all()
+    articles = db_session.query(Article).all()
 
     return topics, articles
 
 
-def database_seed(session, filename='sample-data.json'):
+def database_seed(db_session, filename='sample-data.json'):
     """ provide initial data """
-    topics, articles = base_query(session)
+    topics, articles = base_query(db_session)
 
     if (len(topics) == 0) or (len(articles) == 0):
         with open(filename, 'rb') as f:
@@ -23,7 +23,7 @@ def database_seed(session, filename='sample-data.json'):
         seed_articles = fixtures['article']
         for i in seed_topics:
             topic = Topic(name=i['name'])
-            session.add(topic)
+            db_session.add(topic)
         for i in seed_articles:
             article = Article(
                 title=i['title'],
@@ -32,7 +32,7 @@ def database_seed(session, filename='sample-data.json'):
                     i['data_added'], '%Y-%m-%d').date(),
                 description=i['description'],
                 topic_id=i['topic_id'])
-            session.add(article)
+            db_session.add(article)
         try:
             session.commit()
             flash('Database seeded with fixture data.', 'warning')
