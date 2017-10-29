@@ -1,13 +1,15 @@
-from flask import Flask, render_template, jsonify, url_for, request, flash, redirect, session
+from flask import Flask, render_template, jsonify, url_for, request, flash,\
+                  redirect, session
 from flask.ext.sqlalchemy import SQLAlchemy
-import config
-
-from models import Article, Topic, User
-from database_seed import base_query, database_seed
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from flask.ext.github import GitHub
+
+import config
+from models import Article, Topic, User
+from database_seed import base_query, database_seed
+
+from datetime import date
 
 engine = create_engine(config.DATABASE_CONNECTION)
 DBSession = sessionmaker(bind=engine)
@@ -63,63 +65,90 @@ def authorized(token):
 
 def authenticated():
     """ check if user is authenticated or not """
-    if session.has_key('user_id') and session.has_key('user_token'):
+    if 'user_id' in session and 'user_token' in session:
         user = db_session.query(User).filter_by(id=session['user_id']).first()
-        
+
         if user:
             return user.access_token == session['user_token']
     return False
 
 
-# Routes
-@app.route('/')
+# HTML Routes
+@app.route('/', methods=['GET'])
 def index():
     """ index page """
     database_seed(db_session)
 
     topics, articles = base_query(db_session)
-    return render_template('topics.html', topics=topics, articles=articles, is_authenticated=authenticated)
+    return render_template('topics.html', is_authenticated=authenticated,
+                           topics=topics, articles=articles)
 
 
-@app.route('/topics/<topic_id>/articles')
+@app.route('/topics/<topic_id>/articles', methods=['GET'])
 def view_topics(topic_id):
     """ show filtered articles """
     topics, _articles = base_query(db_session)
     articles = db_session.query(Article).filter_by(topic_id=topic_id)
 
-    return render_template('topics.html', topics=topics, articles=articles, is_authenticated=authenticated)
+    return render_template('topics.html', is_authenticated=authenticated,
+                           topics=topics, articles=articles)
 
 
-@app.route('/articles/new')
+@app.route('/articles/new', methods=['GET', 'POST'])
 def new_article():
     """ add new article """
     if not authenticated():
         return redirect(url_for('login'))
 
-    topics, _articles = base_query(db_session)
+    if request.method == 'GET':
+        topics, _articles = base_query(db_session)
+        return render_template('new_article.html',
+                               is_authenticated=authenticated,
+                               topics=topics)
+    else:
+        form = dict(request.form)
 
-    return render_template('new_article.html', topics=topics, is_authenticated=authenticated)
+        article = Article(
+            title=form['article_title'][0],
+            url=form['article_url'][0],
+            date_added=date.today(),
+            description=form['article_description'][0],
+            topic_id=form['article_topic_id'][0]
+        )
 
+        db_session.add(article)
+        db_session.commit()
+
+        return redirect(url_for('index'))
 
 
 # API JSON routes
-@app.route(api_route + '/topics')
+@app.route(api_route + '/topics', methods=['GET'])
 def get_topics():
-    """ route for topics """
+    """ JSON route - return all topics """
     topics, _ = base_query(db_session)
     return jsonify(topics=[p.serialize for p in topics])
 
 
-@app.route(api_route + '/topics/<topic_id>/articles')
+@app.route(api_route + '/topics/<topic_id>/articles', methods=['GET'])
 def get_topics_articles(topic_id):
-    """ route for filtering articles by topic """
+    """ JSON route - return all articles for specified topic """
     articles = db_session.query(Article).filter_by(topic_id=topic_id)
     return jsonify(articles=[p.serialize for p in articles])
 
 
-@app.route('/articles')
+@app.route(api_route + '/topics/<topic_id>/articles/<article_id>',
+           methods=['GET'])
+def get_topics_article(topic_id, article_id):
+    """ JSON route - return specified article for specified topic """
+    articles = db_session.query(Article)\
+        .filter_by(topic_id=topic_id, id=article_id)
+    return jsonify(articles=[p.serialize for p in articles])
+
+
+@app.route('/articles', methods=['GET'])
 def get_articles():
-    """ route for all articles """
+    """ JSON route - return all articles """
     _, articles = base_query(db_session)
     return jsonify(articles=[p.serialize for p in articles])
 
