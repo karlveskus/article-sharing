@@ -6,22 +6,20 @@ from sqlalchemy.orm import sessionmaker
 from flask.ext.github import GitHub
 
 import config
-from models import Article, Topic, User
+from models import Base, Article, Topic, User
 from database_seed import base_query, database_seed
 
 from datetime import date
 import requests
 
 engine = create_engine(config.DATABASE_CONNECTION)
+Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 db_session = DBSession()
 
 app = Flask(__name__)
-app.debug = config.DEBUG
-app.secret_key = config.SECRET_KEY
+app.config.from_object('config')
 
-app.config['GITHUB_CLIENT_ID'] = config.GITHUB_CLIENT_ID
-app.config['GITHUB_CLIENT_SECRET'] = config.GITHUB_CLIENT_SECRET
 github = GitHub(app)
 
 api_route = config.API_ROUTE

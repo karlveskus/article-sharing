@@ -33,9 +33,5 @@ def database_seed(db_session, filename='sample-data.json'):
                 description=i['description'],
                 topic_id=i['topic_id'])
             db_session.add(article)
-        try:
-            session.commit()
-            flash('Database seeded with fixture data.', 'warning')
-        except Exception as e:
-            flash('Something imploded. {}'.format(e), 'danger')
+        db_session.commit()
     return redirect(url_for('index'))

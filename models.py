@@ -2,6 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+import config
 
 Base = declarative_base()
 
@@ -58,5 +59,5 @@ class Article(Base):
         }
 
 if __name__ == '__main__':
-    engine = create_engine('sqlite:///catalog.db')
+    engine = create_engine(config.DATABASE_CONNECTION)
     Base.metadata.create_all(engine)
