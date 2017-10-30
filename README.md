@@ -44,9 +44,9 @@ python app.py
 Access the application ```locally``` using http://localhost:5000
 
 ## Using own GitHub oauth
-Currently this app is using default pre-made oauth. F ollow steps below to create your own.
+Currently this app is using default pre-made oauth with authorization callback URL to ```http://localhost:5000/github-callback``` so authorization works only locally. Follow steps below to create your own oauth for different URL.
 
 1. Go to https://github.com/settings/applications/new
-2. Register a new OAuth application (Set authorization callback URL to http://localhost:5000/github-callback)
+2. Register a new OAuth application (Set authorization callback URL to http://```<APP_URL>```/github-callback)
 3. Open ```config.py```
 4. Set up new ```GITHUB_CLIENT_ID``` and ```GITHUB_CLIENT_SECRET```
