@@ -92,7 +92,7 @@ def index():
     database_seed(db_session)
 
     topics, articles = base_query(db_session)
-    return render_template('topics.html', can_modify=can_modify,
+    return render_template('articles.html', can_modify=can_modify,
                            is_authenticated=authenticated,
                            topics=topics, articles=articles)
 
@@ -103,7 +103,7 @@ def view_topics(topic_id):
     topics, _articles = base_query(db_session)
     articles = db_session.query(Article).filter_by(topic_id=topic_id)
 
-    return render_template('topics.html', can_modify=can_modify,
+    return render_template('articles.html', can_modify=can_modify,
                            is_authenticated=authenticated,
                            topics=topics, articles=articles)
 
