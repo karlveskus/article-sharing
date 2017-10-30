@@ -58,6 +58,5 @@ class Article(Base):
             'topic_id': self.topic_id,
         }
 
-if __name__ == '__main__':
-    engine = create_engine(config.DATABASE_CONNECTION)
-    Base.metadata.create_all(engine)
+engine = create_engine(config.DATABASE_CONNECTION)
+Base.metadata.create_all(engine)

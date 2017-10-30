@@ -36,11 +36,6 @@ Change directory to project folder
 cd ../../vagrant
 ```
 
-Generate database
-```
-python models.py
-```
-
 Start application
 ```
 python app.py
