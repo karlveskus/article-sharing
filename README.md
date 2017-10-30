@@ -1,7 +1,8 @@
 # Article sharing web app
 
 ## About
-Article sharing is web app, where you can share useful web development articles with everybody. 
+Article sharing is web app, where you can share useful web development articles with everybody. <br>
+Live DEMO https://share-articles.herokuapp.com/
 
 ## Setup
 
