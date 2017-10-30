@@ -9,8 +9,20 @@ nav.navbar {
     margin-bottom: 0;
 }
 
+nav.navbar .navbar-brand:hover {
+    color: #505050;
+}
 
-/* Topics */
+nav.navbar ul.nav > li > a:hover {
+    color: #505050;
+}
+
+nav.navbar li.dropdown a:hover {
+    background: #00bc8c;
+}
+
+
+/* Articles */
 .article {
     margin-bottom: 15px;
 }
@@ -20,8 +32,16 @@ nav.navbar {
     color: 	#A9A9A9;
 }
 
+ul.nav li.active a {
+    background: #00bc8c;
+}
 
-/* New_article */
+ul.nav li.active a:hover {
+    background: #009871;
+}
+
+
+/* Article form */
 textarea {
     resize: vertical; 
 }

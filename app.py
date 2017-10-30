@@ -95,10 +95,11 @@ def index():
 
     return render_template('articles.html', can_modify=can_modify,
                            is_authenticated=authenticated,
-                           topics=topics, articles=articles_reversed)
+                           topics=topics, articles=articles_reversed,
+                           active_topic=None)
 
 
-@app.route('/topics/<topic_id>/articles', methods=['GET'])
+@app.route('/topics/<int:topic_id>/articles', methods=['GET'])
 def view_topics(topic_id):
     """ show filtered articles """
     topics, _articles = base_query(db_session)
@@ -107,7 +108,8 @@ def view_topics(topic_id):
 
     return render_template('articles.html', can_modify=can_modify,
                            is_authenticated=authenticated,
-                           topics=topics, articles=articles_reversed)
+                           topics=topics, articles=articles_reversed,
+                           active_topic=topic_id)
 
 
 @app.route('/articles/new', methods=['GET', 'POST'])
