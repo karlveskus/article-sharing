@@ -17,8 +17,16 @@
                 <div class="col-sm-12 article">
                     <h2>{{article.title}}</h2>
                     <p>{{article.description}}</p>
-                    <p class="date" >Added: {{article.date_added}}</p>                
-                    <p><a class="btn btn-default btn-sm" href="{{ article.url }}" role="button">Read more &raquo;</a></p>
+                    <p class="date" >Added: {{article.date_added}}</p>           
+                    <p>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button class="btn btn-success btn-sm" href="{{ article.url }}" role="button">Read more &raquo;</button>     
+                            {% if can_modify(article) %}
+                                <button class="btn btn-warning btn-sm float-right" href="{{ article.url }}" role="button">Edit</button>
+                                <button class="btn btn-danger btn-sm float-right" href="{{ article.url }}" role="button">Remove</button>
+                            {% endif %}
+                        </div>
+                    </p>
                 </div>
             {% endfor %}
         </div>

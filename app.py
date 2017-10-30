@@ -10,6 +10,7 @@ from models import Article, Topic, User
 from database_seed import base_query, database_seed
 
 from datetime import date
+import requests
 
 engine = create_engine(config.DATABASE_CONNECTION)
 DBSession = sessionmaker(bind=engine)
@@ -38,6 +39,7 @@ def logout():
     """ logout route """
     session.pop('user_id', None)
     session.pop('access_token', None)
+    session.pop('username', None)
     return redirect(url_for('index'))
 
 
@@ -45,32 +47,42 @@ def logout():
 @github.authorized_handler
 def authorized(token):
     """ callback for github auth """
-    redirect_to = request.args.get('next')
+    url = "https://api.github.com/user?access_token=" + str(token)
+    req = requests.get(url)
+    github_username = req.json()['login']
+
+    redirect_to = request.args.get('next') or url_for('index')
     if token is None:
         return redirect(redirect_to)
 
-    user = db_session.query(User).filter_by(access_token=token).first()
+    user = db_session.query(User).filter_by(github_username=github_username).first()
     if user is None:
-        user = User(access_token=token)
+        user = User(github_username=github_username)
         db_session.add(user)
 
     user.access_token = token
     db_session.commit()
 
     session['user_id'] = user.id
-    session['user_token'] = user.access_token
+    session['access_token'] = user.access_token
+    session['username'] = user.github_username
 
     return redirect(url_for('index'))
 
 
 def authenticated():
     """ check if user is authenticated or not """
-    if 'user_id' in session and 'user_token' in session:
+    if 'user_id' in session and 'access_token' in session:
         user = db_session.query(User).filter_by(id=session['user_id']).first()
 
         if user:
-            return user.access_token == session['user_token']
+            return user.access_token == session['access_token']
     return False
+
+
+def can_modify(article):
+    """ check if article is added by the session user """
+    return authenticated() and article.adder_id == session['user_id']
 
 
 # HTML Routes
@@ -80,7 +92,8 @@ def index():
     database_seed(db_session)
 
     topics, articles = base_query(db_session)
-    return render_template('topics.html', is_authenticated=authenticated,
+    return render_template('topics.html', can_modify=can_modify,
+                           is_authenticated=authenticated,
                            topics=topics, articles=articles)
 
 
@@ -90,7 +103,8 @@ def view_topics(topic_id):
     topics, _articles = base_query(db_session)
     articles = db_session.query(Article).filter_by(topic_id=topic_id)
 
-    return render_template('topics.html', is_authenticated=authenticated,
+    return render_template('topics.html', can_modify=can_modify,
+                           is_authenticated=authenticated,
                            topics=topics, articles=articles)
 
 
@@ -113,7 +127,8 @@ def new_article():
             url=form['article_url'][0],
             date_added=date.today(),
             description=form['article_description'][0],
-            topic_id=form['article_topic_id'][0]
+            topic_id=form['article_topic_id'][0],
+            adder_id=session['user_id']
         )
 
         db_session.add(article)

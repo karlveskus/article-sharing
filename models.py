@@ -10,10 +10,11 @@ class User(Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    access_token = Column(String(200))
+    access_token = Column(String(200), nullable=False)
+    github_username = Column(String(200), nullable=False)
 
-    def __init__(self, access_token):
-        self.access_token = access_token
+    def __init__(self, github_username):
+        self.github_username = github_username
 
 
 class Topic(Base):
@@ -36,11 +37,13 @@ class Article(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String(80), nullable=False)
-    url = Column(String(255))
-    date_added = Column(Date)
-    description = Column(String(2000))
-    topic_id = Column(Integer, ForeignKey('topic.id'))
+    url = Column(String(255), nullable=False)
+    date_added = Column(Date, nullable=False)
+    description = Column(String(2000), nullable=False)
+    topic_id = Column(Integer, ForeignKey('topic.id'), nullable=False)
     topic = relationship(Topic)
+    adder_id = Column(Integer, ForeignKey('user.id'))
+    adder = relationship(User)
 
     @property
     def serialize(self):
