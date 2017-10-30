@@ -108,42 +108,10 @@ def view_topics(topic_id):
                            topics=topics, articles=articles)
 
 
-@app.route('/articles/<article_id>/edit', methods=['GET', 'POST'])
-def edit_article(article_id):
-    """ add new article """
-    article = db_session.query(Article).filter_by(id=article_id).one()
-
-    if not authenticated():
-        return redirect(url_for('login'))
-
-    if not can_modify(article):
-        return redirect(url_for('index'))
-
-    if request.method == 'GET':
-        topics, _articles = base_query(db_session)
-
-        return render_template('article_form.html',
-                               is_authenticated=authenticated,
-                               topics=topics, article=article)
-    else:
-        form = dict(request.form)
-
-        article.title = form['article_title'][0]
-        article.url = form['article_url'][0]
-        article.description = form['article_description'][0]
-        article.topic_id = form['article_topic_id'][0]
-
-        db_session.add(article)
-        db_session.commit()
-
-        return redirect(url_for('index'))
-
-
 @app.route('/articles/new', methods=['GET', 'POST'])
 def new_article():
     """ add new article """
-    if not authenticated():
-        return redirect(url_for('login'))
+    if not authenticated(): return redirect(url_for('login'))
 
     if request.method == 'GET':
         topics, _articles = base_query(db_session)
@@ -165,6 +133,53 @@ def new_article():
         )
 
         db_session.add(article)
+        db_session.commit()
+
+        return redirect(url_for('index'))
+
+
+@app.route('/articles/<article_id>/edit', methods=['GET', 'POST'])
+def edit_article(article_id):
+    """ edit article """
+    article = db_session.query(Article).filter_by(id=article_id).one()
+
+    if not authenticated(): return redirect(url_for('login'))
+    if not can_modify(article): return redirect(url_for('index'))
+
+    if request.method == 'GET':
+        topics, _articles = base_query(db_session)
+
+        return render_template('article_form.html',
+                               is_authenticated=authenticated,
+                               topics=topics, article=article)
+    else:
+        form = dict(request.form)
+
+        article.title = form['article_title'][0]
+        article.url = form['article_url'][0]
+        article.description = form['article_description'][0]
+        article.topic_id = form['article_topic_id'][0]
+
+        db_session.add(article)
+        db_session.commit()
+
+        return redirect(url_for('index'))
+
+
+@app.route('/articles/<article_id>/delete', methods=['GET', 'POST'])
+def delete_article(article_id):
+    """ delete article """
+    article = db_session.query(Article).filter_by(id=article_id).one()
+
+    if not authenticated(): return redirect(url_for('login'))
+    if not can_modify(article): return redirect(url_for('index'))
+
+    if request.method == 'GET':
+        return render_template('delete_article.html',
+                               is_authenticated=authenticated,
+                               article=article)
+    else:
+        db_session.delete(article)
         db_session.commit()
 
         return redirect(url_for('index'))
