@@ -118,11 +118,10 @@ def new_article():
 
     if request.method == 'GET':
         topics, _articles = base_query(db_session)
-        article = {"title": "", "url": "", "description": "", "topic_id": None}
 
         return render_template('article_form.html',
                                is_authenticated=authenticated,
-                               topics=topics, article=article,
+                               topics=topics, article=None,
                                action='new')
     else:
         form = dict(request.form)
