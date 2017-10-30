@@ -1,9 +1,9 @@
 from flask import Flask, render_template, jsonify, url_for, request, flash,\
                   redirect, session
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from flask.ext.github import GitHub
+from flask_github import GitHub
 
 import config
 from models import Base, Article, Topic, User
@@ -143,7 +143,7 @@ def new_article():
         return redirect(url_for('index'))
 
 
-@app.route('/articles/<article_id>/edit', methods=['GET', 'POST'])
+@app.route('/articles/<int:article_id>/edit', methods=['GET', 'POST'])
 def edit_article(article_id):
     """ edit article """
     article = db_session.query(Article).filter_by(id=article_id).one()
@@ -174,7 +174,7 @@ def edit_article(article_id):
         return redirect(url_for('index'))
 
 
-@app.route('/articles/<article_id>/delete', methods=['GET', 'POST'])
+@app.route('/articles/<int:article_id>/delete', methods=['GET', 'POST'])
 def delete_article(article_id):
     """ delete article """
     article = db_session.query(Article).filter_by(id=article_id).one()
@@ -203,21 +203,21 @@ def get_topics():
     return jsonify([p.serialize for p in topics])
 
 
-@app.route(api_route + '/topics/<topic_id>', methods=['GET'])
+@app.route(api_route + '/topics/<int:topic_id>', methods=['GET'])
 def get_topic(topic_id):
     """ JSON route - return all topics """
     topic = db_session.query(Topic).filter_by(id=topic_id).one()
     return jsonify(topic.serialize)
 
 
-@app.route(api_route + '/topics/<topic_id>/articles', methods=['GET'])
+@app.route(api_route + '/topics/<int:topic_id>/articles', methods=['GET'])
 def get_topics_articles(topic_id):
     """ JSON route - return all articles for specified topic """
     articles = db_session.query(Article).filter_by(topic_id=topic_id)
     return jsonify([p.serialize for p in articles])
 
 
-@app.route(api_route + '/topics/<topic_id>/articles/<article_id>',
+@app.route(api_route + '/topics/<int:topic_id>/articles/<article_id>',
            methods=['GET'])
 def get_topics_article(topic_id, article_id):
     """ JSON route - return specified article for specified topic """
@@ -233,7 +233,7 @@ def get_articles():
     return jsonify([p.serialize for p in articles])
 
 
-@app.route(api_route + '/articles/<article_id>', methods=['GET'])
+@app.route(api_route + '/articles/<int:article_id>', methods=['GET'])
 def get_article(article_id):
     """ JSON route - return specified article """
     article = db_session.query(Article)\
