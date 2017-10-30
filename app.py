@@ -55,7 +55,8 @@ def authorized(token):
     if token is None:
         return redirect(redirect_to)
 
-    user = db_session.query(User).filter_by(github_username=github_username).first()
+    user = db_session.query(User)\
+        .filter_by(github_username=github_username).first()
     if user is None:
         user = User(github_username=github_username)
         db_session.add(user)
@@ -114,7 +115,8 @@ def view_topics(topic_id):
 @app.route('/articles/new', methods=['GET', 'POST'])
 def new_article():
     """ add new article """
-    if not authenticated(): return redirect(url_for('login'))
+    if not authenticated():
+        return redirect(url_for('login'))
 
     if request.method == 'GET':
         topics, _articles = base_query(db_session)
@@ -146,8 +148,10 @@ def edit_article(article_id):
     """ edit article """
     article = db_session.query(Article).filter_by(id=article_id).one()
 
-    if not authenticated(): return redirect(url_for('login'))
-    if not can_modify(article): return redirect(url_for('index'))
+    if not authenticated():
+        return redirect(url_for('login'))
+    if not can_modify(article):
+        return redirect(url_for('index'))
 
     if request.method == 'GET':
         topics, _articles = base_query(db_session)
@@ -175,8 +179,10 @@ def delete_article(article_id):
     """ delete article """
     article = db_session.query(Article).filter_by(id=article_id).one()
 
-    if not authenticated(): return redirect(url_for('login'))
-    if not can_modify(article): return redirect(url_for('index'))
+    if not authenticated():
+        return redirect(url_for('login'))
+    if not can_modify(article):
+        return redirect(url_for('index'))
 
     if request.method == 'GET':
         return render_template('delete_article.html',
@@ -194,30 +200,45 @@ def delete_article(article_id):
 def get_topics():
     """ JSON route - return all topics """
     topics, _ = base_query(db_session)
-    return jsonify(topics=[p.serialize for p in topics])
+    return jsonify([p.serialize for p in topics])
+
+
+@app.route(api_route + '/topics/<topic_id>', methods=['GET'])
+def get_topic(topic_id):
+    """ JSON route - return all topics """
+    topic = db_session.query(Topic).filter_by(id=topic_id).one()
+    return jsonify(topic.serialize)
 
 
 @app.route(api_route + '/topics/<topic_id>/articles', methods=['GET'])
 def get_topics_articles(topic_id):
     """ JSON route - return all articles for specified topic """
     articles = db_session.query(Article).filter_by(topic_id=topic_id)
-    return jsonify(articles=[p.serialize for p in articles])
+    return jsonify([p.serialize for p in articles])
 
 
 @app.route(api_route + '/topics/<topic_id>/articles/<article_id>',
            methods=['GET'])
 def get_topics_article(topic_id, article_id):
     """ JSON route - return specified article for specified topic """
-    articles = db_session.query(Article)\
-        .filter_by(topic_id=topic_id, id=article_id)
-    return jsonify(articles=[p.serialize for p in articles])
+    article = db_session.query(Article)\
+        .filter_by(topic_id=topic_id, id=article_id).one()
+    return jsonify(article.serialize)
 
 
-@app.route('/articles', methods=['GET'])
+@app.route(api_route + '/articles', methods=['GET'])
 def get_articles():
     """ JSON route - return all articles """
     _, articles = base_query(db_session)
-    return jsonify(articles=[p.serialize for p in articles])
+    return jsonify([p.serialize for p in articles])
+
+
+@app.route(api_route + '/articles/<article_id>', methods=['GET'])
+def get_article(article_id):
+    """ JSON route - return specified article """
+    article = db_session.query(Article)\
+        .filter_by(id=article_id).one()
+    return jsonify(article.serialize)
 
 
 # Server
