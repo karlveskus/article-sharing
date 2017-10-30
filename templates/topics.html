@@ -20,10 +20,10 @@
                     <p class="date" >Added: {{article.date_added}}</p>           
                     <p>
                         <div class="btn-group" role="group" aria-label="...">
-                            <button class="btn btn-success btn-sm" href="{{ article.url }}" role="button">Read more &raquo;</button>     
+                            <a class="btn btn-success btn-sm" href="{{ article.url }}" role="button">Read more &raquo;</a>     
                             {% if can_modify(article) %}
-                                <button class="btn btn-warning btn-sm float-right" href="{{ article.url }}" role="button">Edit</button>
-                                <button class="btn btn-danger btn-sm float-right" href="{{ article.url }}" role="button">Remove</button>
+                                <a class="btn btn-warning btn-sm" href="{{ article.url }}" role="button">Edit</a>
+                                <a class="btn btn-danger btn-sm" href="{{ article.url }}" role="button">Remove</a>
                             {% endif %}
                         </div>
                     </p>
