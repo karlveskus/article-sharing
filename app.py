@@ -92,9 +92,11 @@ def index():
     database_seed(db_session)
 
     topics, articles = base_query(db_session)
+    articles_reversed = articles[::-1]
+
     return render_template('articles.html', can_modify=can_modify,
                            is_authenticated=authenticated,
-                           topics=topics, articles=articles)
+                           topics=topics, articles=articles_reversed)
 
 
 @app.route('/topics/<topic_id>/articles', methods=['GET'])
@@ -102,10 +104,11 @@ def view_topics(topic_id):
     """ show filtered articles """
     topics, _articles = base_query(db_session)
     articles = db_session.query(Article).filter_by(topic_id=topic_id)
+    articles_reversed = articles[::-1]
 
     return render_template('articles.html', can_modify=can_modify,
                            is_authenticated=authenticated,
-                           topics=topics, articles=articles)
+                           topics=topics, articles=articles_reversed)
 
 
 @app.route('/articles/new', methods=['GET', 'POST'])
@@ -119,7 +122,8 @@ def new_article():
 
         return render_template('article_form.html',
                                is_authenticated=authenticated,
-                               topics=topics, article=article)
+                               topics=topics, article=article,
+                               action='new')
     else:
         form = dict(request.form)
 
@@ -151,7 +155,8 @@ def edit_article(article_id):
 
         return render_template('article_form.html',
                                is_authenticated=authenticated,
-                               topics=topics, article=article)
+                               topics=topics, article=article,
+                               action='edit')
     else:
         form = dict(request.form)
 

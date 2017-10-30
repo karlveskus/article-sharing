@@ -13,11 +13,14 @@
             <div class="row">
                 <div class="form-group col-sm-7">
                     <label class="control-label" for="article_title">Title</label>
-                    <input type="text" class="form-control" id="article_title" name="article_title" value="{{ article.title }}" required>
+                    <input type="text" class="form-control" required
+                           id="article_title"  name="article_title"
+                           value="{{ article.title }}" placeholder="Title">
                 </div>
                 <div class="form-group col-sm-5">
                     <label class="control-label" for="article_topic_id">Topic</label>
-                    <select class="form-control" id="article_topic_id" name="article_topic_id" required>
+                    <select class="form-control" required
+                            id="article_topic_id" name="article_topic_id">
                         {% for topic in topics %}
                             <option {% if article.topic_id == topic.id %} selected {% endif %} value="{{ topic.id }}">
                                 {{ topic.name }}
@@ -29,15 +32,22 @@
             
             <div class="form-group">
                 <label class="control-label" for="article_url">URL</label>
-                <input type="text" class="form-control" id="article_url" name="article_url" value="{{ article.url }}" required>
+                <input type="url" class="form-control" required
+                       id="article_url" name="article_url"
+                       value="{{ article.url }}" placeholder="http://google.com">
             </div>
             <div class="form-group">
                 <label class="control-label" for="article_description">Description</label>
-                <textarea class="form-control" rows="4" 
-                          id="article_description" name="article_description" required>{{ article.description }}</textarea>
+                <textarea class="form-control" required rows="4"
+                          id="article_description" name="article_description"
+                          placeholder="Write article description here...">{{ article.description }}</textarea>
             </div>
             <div class="float-right">
-                <button class="btn btn-success" type="submit">Add new article</button>
+                {% if action == 'new' %}
+                    <button class="btn btn-success" type="submit">Add new article</button>
+                {% else %}
+                    <button class="btn btn-success" type="submit">Edit this article</button>
+                {% endif %}
             </div>
         </form>
     </div>
