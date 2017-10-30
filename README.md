@@ -10,10 +10,12 @@ Live DEMO https://share-articles.herokuapp.com/
 - VirtualBox from https://www.virtualbox.org/
 - Vagrant from https://www.vagrantup.com/
 
+Node: Due Vagrant and VirtualBox incompatibilities in some versions I suggest to use VirtualBox version 5.1.X
+
 #### Setup
 Clone this repository
 ```
-git clone git@github.com:karlveskus/article-sharing.git
+git clone https://github.com/karlveskus/article-sharing.git
 ```
 
 Change directory to project folder
