@@ -1,9 +1,6 @@
 from flask import Flask, render_template, jsonify, url_for, request, flash,\
                   redirect, session
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-from flask_github import GitHub
+
 
 
 
