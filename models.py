@@ -2,9 +2,10 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
-import config
 
 Base = declarative_base()
+
+DATABASE_CONNECTION = 'sqlite:///catalog.db'
 
 
 class User(Base):
@@ -58,5 +59,5 @@ class Article(Base):
             'topic_id': self.topic_id,
         }
 
-engine = create_engine(config.DATABASE_CONNECTION)
+engine = create_engine(DATABASE_CONNECTION)
 Base.metadata.create_all(engine)
