@@ -8,9 +8,7 @@ from flask_github import GitHub
 
 app = Flask(__name__)
 
-#github = GitHub(app)
 
-api_route = API_ROUTE
 
 
 @app.route('/')
