@@ -8,9 +8,6 @@ import config
 from models import Base, Article, Topic, User
 from database_seed import base_query, database_seed
 
-from datetime import date
-import requests
-
 engine = create_engine(config.DATABASE_CONNECTION)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
