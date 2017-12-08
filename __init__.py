@@ -5,6 +5,9 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models import Base, Article, Topic, User
 from datetime import date
 
+import json
+import datetime
+
 DEBUG = True
 SECRET_KEY = '?\xbf,\xb4\x8d\xa3"<\x9c\xb0@\x0f5\xab,w\xee\x8d$0\x13\x8b83'
 
@@ -34,7 +37,27 @@ def base_query(db_session):
 
 
 def database_seed(db_session, filename='sample-data.json'):
+    """ provide initial data """
+    topics, articles = base_query(db_session)
 
+    if (len(topics) == 0) or (len(articles) == 0):
+        with open(filename, 'rb') as f:
+            fixtures = json.load(f)
+        seed_topics = fixtures['topic']
+        seed_articles = fixtures['article']
+        for i in seed_topics:
+            topic = Topic(name=i['name'])
+            db_session.add(topic)
+        for i in seed_articles:
+            article = Article(
+                title=i['title'],
+                url=i['url'],
+                date_added=datetime.datetime.strptime(
+                    i['data_added'], '%Y-%m-%d').date(),
+                description=i['description'],
+                topic_id=i['topic_id'])
+            db_session.add(article)
+        db_session.commit()
     return redirect(url_for('index'))
 
 
