@@ -40,24 +40,7 @@ def database_seed(db_session, filename='sample-data.json'):
     """ provide initial data """
     topics, articles = base_query(db_session)
 
-    if (len(topics) == 0) or (len(articles) == 0):
-        with open(filename, 'rb') as f:
-            fixtures = json.load(f)
-        seed_topics = fixtures['topic']
-        seed_articles = fixtures['article']
-        for i in seed_topics:
-            topic = Topic(name=i['name'])
-            db_session.add(topic)
-        for i in seed_articles:
-            article = Article(
-                title=i['title'],
-                url=i['url'],
-                date_added=datetime.datetime.strptime(
-                    i['data_added'], '%Y-%m-%d').date(),
-                description=i['description'],
-                topic_id=i['topic_id'])
-            db_session.add(article)
-        db_session.commit()
+    
     return redirect(url_for('index'))
 
 
