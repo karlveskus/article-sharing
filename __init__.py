@@ -23,10 +23,7 @@ from datetime import date
 import requests
 
 
-engine = create_engine(DATABASE_CONNECTION)
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-db_session = DBSession()
+
 
 app = Flask(__name__)
 
