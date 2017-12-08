@@ -2,6 +2,8 @@ from flask import Flask, render_template, jsonify, url_for, request, flash,\
                   redirect, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from models import Base, Article, Topic, User
+
 
 DEBUG = True
 SECRET_KEY = '?\xbf,\xb4\x8d\xa3"<\x9c\xb0@\x0f5\xab,w\xee\x8d$0\x13\x8b83'
@@ -14,11 +16,38 @@ GITHUB_CLIENT_SECRET = 'ecb9f99a072a97dafb9cf7d4ae7974bf6e0a99ea'
 API_ROUTE = '/api'
 
 
-from models import Base, Article, Topic, User
-from database_seed import base_query, database_seed
 
-from datetime import date
-import requests
+def base_query(db_session):
+    topics = db_session.query(Topic).all()
+    articles = db_session.query(Article).all()
+
+    return topics, articles
+
+
+def database_seed(db_session, filename='sample-data.json'):
+    """ provide initial data """
+    topics, articles = base_query(db_session)
+
+    if (len(topics) == 0) or (len(articles) == 0):
+        with open(filename, 'rb') as f:
+            fixtures = json.load(f)
+        seed_topics = fixtures['topic']
+        seed_articles = fixtures['article']
+        for i in seed_topics:
+            topic = Topic(name=i['name'])
+            db_session.add(topic)
+        for i in seed_articles:
+            article = Article(
+                title=i['title'],
+                url=i['url'],
+                date_added=datetime.datetime.strptime(
+                    i['data_added'], '%Y-%m-%d').date(),
+                description=i['description'],
+                topic_id=i['topic_id'])
+            db_session.add(article)
+        db_session.commit()
+    return redirect(url_for('index'))
+
 
 
 engine = create_engine(DATABASE_CONNECTION)
