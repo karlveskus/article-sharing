@@ -12,17 +12,10 @@ from database_seed import base_query, database_seed
 from datetime import date
 import requests
 
-engine = create_engine(config.DATABASE_CONNECTION)
-Base.metadata.bind = engine
-DBSession = scoped_session(sessionmaker(bind=engine))
-db_session = DBSession()
 
 app = Flask(__name__)
-app.config.from_object('config')
 
-github = GitHub(app)
 
-api_route = config.API_ROUTE
 
 
 @app.route('/')
