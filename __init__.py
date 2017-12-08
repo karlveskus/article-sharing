@@ -17,8 +17,6 @@ API_ROUTE = '/api'
 
 
 
-from datetime import date
-import requests
 
 
 
