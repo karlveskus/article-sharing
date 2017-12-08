@@ -38,9 +38,6 @@ def base_query(db_session):
 
 def database_seed(db_session, filename='sample-data.json'):
     """ provide initial data """
-    topics, articles = base_query(db_session)
-
-    
     return redirect(url_for('index'))
 
 
