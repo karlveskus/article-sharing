@@ -4,7 +4,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from flask_github import GitHub
 
-import config
 
 
 engine = create_engine(config.DATABASE_CONNECTION)
