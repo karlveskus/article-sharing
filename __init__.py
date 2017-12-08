@@ -16,7 +16,6 @@ GITHUB_CLIENT_SECRET = 'ecb9f99a072a97dafb9cf7d4ae7974bf6e0a99ea'
 API_ROUTE = '/api'
 
 
-from models import Base, Article, Topic, User
 
 from datetime import date
 import requests
