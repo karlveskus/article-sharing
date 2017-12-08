@@ -36,11 +36,6 @@ def base_query(db_session):
     return topics, articles
 
 
-def database_seed(db_session, filename='sample-data.json'):
-    """ provide initial data """
-    return redirect(url_for('index'))
-
-
 # Github auth
 @app.route('/login')
 def login():
@@ -68,8 +63,6 @@ def can_modify(article):
 @app.route('/', methods=['GET'])
 def index():
     """ index page """
-    database_seed(db_session)
-
     topics, articles = base_query(db_session)
     articles_reversed = articles[::-1]
 
