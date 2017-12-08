@@ -4,15 +4,22 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from flask_github import GitHub
 
+DEBUG = True
+SECRET_KEY = '?\xbf,\xb4\x8d\xa3"<\x9c\xb0@\x0f5\xab,w\xee\x8d$0\x13\x8b83'
+DATABASE_CONNECTION = 'postgresql://catalog:password@localhost/catalog'
+
+GITHUB_CLIENT_ID = '7d4f47c88e6da7febbbb'
+GITHUB_CLIENT_SECRET = 'ecb9f99a072a97dafb9cf7d4ae7974bf6e0a99ea'
+
+API_ROUTE = '/api'
 
 
-engine = create_engine(config.DATABASE_CONNECTION)
+engine = create_engine(DATABASE_CONNECTION)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 db_session = DBSession()
 
 app = Flask(__name__)
-app.config.from_object('config')
 
 github = GitHub(app)
 
