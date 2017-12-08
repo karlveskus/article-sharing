@@ -5,8 +5,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from flask_github import GitHub
 
 import config
-from models import Base, Article, Topic, User
-from database_seed import base_query, database_seed
+
 
 engine = create_engine(config.DATABASE_CONNECTION)
 Base.metadata.bind = engine
