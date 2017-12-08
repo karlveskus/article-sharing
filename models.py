@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-DATABASE_CONNECTION = 'postgresql://postgres:password@localhost/catalog'
+DATABASE_CONNECTION = 'postgresql://catalog:password@localhost/catalog'
 #DATABASE_CONNECTION = 'sqlite:///catalog.db'
 
 class User(Base):
