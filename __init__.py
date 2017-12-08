@@ -3,7 +3,7 @@ from flask import Flask, render_template, jsonify, url_for, request, flash,\
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models import Base, Article, Topic, User
-
+from datetime import date
 
 DEBUG = True
 SECRET_KEY = '?\xbf,\xb4\x8d\xa3"<\x9c\xb0@\x0f5\xab,w\xee\x8d$0\x13\x8b83'
