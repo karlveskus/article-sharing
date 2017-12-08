@@ -11,7 +11,7 @@ import datetime
 DEBUG = True
 SECRET_KEY = '?\xbf,\xb4\x8d\xa3"<\x9c\xb0@\x0f5\xab,w\xee\x8d$0\x13\x8b83'
 
-DATABASE_CONNECTION = 'postgresql://catalog:password@localhost/catalog'
+DATABASE_CONNECTION = 'postgresql://postgres:password@localhost/catalog'
 #DATABASE_CONNECTION = 'sqlite:///catalog.db'
 
 GITHUB_CLIENT_ID = '7d4f47c88e6da7febbbb'
