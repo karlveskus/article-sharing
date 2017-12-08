@@ -13,7 +13,7 @@ import requests
 
 engine = create_engine(config.DATABASE_CONNECTION)
 Base.metadata.bind = engine
-DBSession = scoped_session(sessionmaker(bind=engine))
+DBSession = sessionmaker(bind=engine)
 db_session = DBSession()
 
 app = Flask(__name__)
